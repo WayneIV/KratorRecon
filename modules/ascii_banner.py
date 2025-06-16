@@ -16,14 +16,13 @@ except Exception:
 OUTPUT_DIR = Path('output/banner')
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-BANNER_LINES = [
-    "  _  __               _            _____ _     _       ",
-    " | |/ /              | |          /  __ \ |   | |      ",
-    " | ' / ___ _ __   ___| | _____    | /  \/ |__ | | ___  ",
-    " |  < / _ \ '_ \ / __| |/ / __|   | |   | '_ \| |/ _ \ ",
-    " | . \  __/ | | | (__|   <\__ \   | \__/\ | | | |  __/ ",
-    " |_|\_\___|_| |_|\___|_|\_\___/    \____/_| |_|_|\___| ",
-]
+BANNER = r"""
+ _  __          _             
+| |/ /_ __ __ _| |_ ___  _ __ 
+| ' /| '__/ _` | __/ _ \| '__|
+| . \| | | (_| | || (_) | |   
+|_|\_\_|  \__,_|\__\___/|_|   
+"""
 
 
 # required input() function
@@ -50,9 +49,9 @@ def run():
     captured = ""
     with Live(console=console, refresh_per_second=4) as live:
         rendered = ""
-        for line in BANNER_LINES:
+        for line in BANNER.splitlines():
             rendered += line + "\n"
-            live.update(Panel(rendered, title=f"KratorStrike v{VERSION}", border_style="red"))
+            live.update(Panel(rendered, title=f"Krator v{VERSION}", border_style="red"))
             time.sleep(0.2)
         captured = rendered
     status_panel = Panel(f"Version: {VERSION}\nStatus: Ready", title="Status", style="green")
