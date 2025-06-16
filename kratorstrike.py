@@ -5,6 +5,8 @@ from rich.console import Console
 from rich.table import Table
 from rich.prompt import Prompt
 
+from modules import ascii_banner
+
 logging.basicConfig(filename='logs/session.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -15,10 +17,15 @@ MODULES = {
     '2': ('Active Recon', 'recon_active'),
     '3': ('AI Analyst', 'ai_analyst'),
     '4': ('Plugin Loader', 'plugin_loader'),
-    '5': ('Generate Report', 'report_gen')
+    '5': ('Generate Report', 'report_gen'),
+    '6': ('Face Scraper', 'face_scraper')
 }
 
 def main():
+    try:
+        ascii_banner.run()
+    except Exception as e:
+        logging.error(f"Failed to display banner: {e}")
     while True:
         table = Table(title="KratorStrike")
         table.add_column("Option")
