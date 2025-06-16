@@ -27,6 +27,11 @@ def save_output(target, data):
     console.print(f'[green]Results saved to {filename}[/green]')
 
 
+def print_summary(data):
+    keys = ', '.join(k for k in data if k != 'target')
+    console.print(f'[cyan]Collected: {keys}[/cyan]')
+
+
 def whois_lookup(target):
     try:
         if all(c.isdigit() or c == '.' for c in target):
@@ -79,5 +84,6 @@ def run():
     }
 
     save_output(target, data)
+    print_summary(data)
     console.print('[bold green]Passive recon completed[/bold green]')
 

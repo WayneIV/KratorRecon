@@ -28,6 +28,14 @@ def run_plugin(path: Path):
         logging.error(f'Plugin {path} failed: {e}')
 
 
+def save_output(_target, _data):
+    pass
+
+
+def print_summary():
+    console.print('[cyan]Plugin loader finished[/cyan]')
+
+
 def run():
     console.print('[bold cyan]Plugin Loader[/bold cyan]')
     plugins = list_plugins()
@@ -49,4 +57,5 @@ def run():
         console.print('[red]Invalid selection[/red]')
         return
     run_plugin(plugins[idx])
+    print_summary()
     console.print('[green]Plugin execution completed[/green]')
