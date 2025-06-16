@@ -9,7 +9,10 @@ from rich.panel import Panel
 from rich.live import Live
 
 console = Console()
-VERSION = "0.1.0"
+try:
+    VERSION = Path('krator_version.txt').read_text().strip()
+except Exception:
+    VERSION = "0.0.0"
 OUTPUT_DIR = Path('output/banner')
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 

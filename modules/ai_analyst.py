@@ -34,6 +34,11 @@ def save_output(src, text):
     console.print(f'[green]Summary saved to {out_file}[/green]')
 
 
+def print_summary(text):
+    console.print('[cyan]Analysis summary:[/cyan]')
+    console.print(text)
+
+
 def run():
     console.print('[bold cyan]AI Analyst[/bold cyan]')
     path = get_input()
@@ -44,5 +49,5 @@ def run():
         logging.error(f'Failed to load JSON: {e}')
         return
     result = analyze(data)
-    console.print(result)
+    print_summary(result)
     save_output(path, result)

@@ -1,6 +1,7 @@
 import importlib
 import sys
 import logging
+from pathlib import Path
 from rich.console import Console
 from rich.table import Table
 from rich.prompt import Prompt
@@ -11,17 +12,30 @@ logging.basicConfig(filename='logs/session.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 console = Console()
+Path('logs').mkdir(exist_ok=True)
 
 MODULES = {
     '1': ('Passive Recon', 'recon_passive'),
     '2': ('Active Recon', 'recon_active'),
-    '3': ('AI Analyst', 'ai_analyst'),
-    '4': ('Plugin Loader', 'plugin_loader'),
-    '5': ('Generate Report', 'report_gen'),
-    '6': ('Face Scraper', 'face_scraper')
+    '3': ('Brute Force', 'brute_force'),
+    '4': ('Visual Recon', 'visual_recon'),
+    '5': ('AI Analyst', 'ai_analyst'),
+    '6': ('Plugin Loader', 'plugin_loader'),
+    '7': ('Generate Report', 'report_gen'),
+    '8': ('Self Updater', 'self_updater')
 }
 
+
+def disclaimer():
+    console.print('[bold red]Warning:[/bold red] Use only on systems you own or have permission to test.')
+    console.print('Unauthorized use may violate the CFAA and Iowa Code \u00a7715.6')
+    ans = Prompt.ask('Do you accept the acceptable use policy? (yes/no)', default='no')
+    if ans.lower() != 'yes':
+        console.print('Declined. Exiting.')
+        sys.exit(0)
+
 def main():
+    disclaimer()
     try:
         ascii_banner.run()
     except Exception as e:

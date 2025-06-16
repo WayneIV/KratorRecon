@@ -26,7 +26,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 MATCH_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def input():
+def get_input():
     img_path = Prompt.ask('Path to known face image')
     query = Prompt.ask('Search term for Google Images', default='')
     return {'image': img_path, 'query': query}
@@ -40,8 +40,8 @@ def save_output(target, data):
     console.print(f"[green]Results saved to {filename}[/green]")
 
 
-def print_summary():
-    console.print("[bold magenta]Face scraping completed[/bold magenta]")
+def print_summary(data):
+    console.print(f"[bold magenta]{len(data.get('matches', []))} matches found[/bold magenta]")
 
 
 def fetch_image_urls(query, limit=5):
@@ -128,9 +128,9 @@ def extract_exif(buf):
 
 
 def run():
-    params = input()
+    params = get_input()
     urls = fetch_image_urls(params['query']) if params['query'] else []
     matches = match_faces(params['image'], urls)
     data = {'input_image': params['image'], 'query': params['query'], 'matches': matches}
     save_output('faces', data)
-    print_summary()
+    print_summary(data)

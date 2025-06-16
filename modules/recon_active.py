@@ -27,6 +27,11 @@ def save_output(target, data):
     console.print(f'[green]Results saved to {filename}[/green]')
 
 
+def print_summary(data):
+    open_ports = [str(p) for p, v in data['ports'].items() if v == 'open']
+    console.print(f'[cyan]Open ports: {", ".join(open_ports)}[/cyan]')
+
+
 def scan_ports(target):
     results = {}
     for port in COMMON_PORTS:
@@ -81,5 +86,6 @@ def run():
     }
 
     save_output(target, data)
+    print_summary(data)
     console.print('[bold green]Active recon completed[/bold green]')
 
