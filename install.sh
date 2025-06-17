@@ -12,7 +12,7 @@ fi
 
 $SUDO $PKG update -y
 $SUDO $PKG install -y python3 python3-pip git
-pip3 install --user rich requests beautifulsoup4 face_recognition Pillow ipwhois dnspython pyfiglet questionary simple-term-menu
+pip3 install --user rich requests beautifulsoup4 face_recognition Pillow ipwhois dnspython questionary simple-term-menu
 
 # create alias
 if [ -n "$PREFIX" ]; then

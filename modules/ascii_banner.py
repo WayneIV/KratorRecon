@@ -4,7 +4,6 @@ from pathlib import Path
 
 from rich.console import Console
 from rich.panel import Panel
-from pyfiglet import figlet_format
 
 console = Console()
 try:
@@ -14,7 +13,13 @@ except Exception:
 OUTPUT_DIR = Path('output/banner')
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-BANNER = figlet_format("Krator", font="slant")
+BANNER = r"""
+    __ __            __
+   / //_/_________ _/ /_____  _____
+  / ,<  / ___/ __ `/ __/ __ \/ ___/
+ / /| |/ /  / /_/ / /_/ /_/ / /
+/_/ |_/_/   \__,_/\__/\____/_/
+""".strip()
 
 
 # required input() function
