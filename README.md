@@ -18,7 +18,7 @@ Launch the dashboard:
 python3 kratorstrike.py
 ```
 
-Choose a module from the menu. Reports can be generated from collected JSON files with the **Generate Report** option.
+Choose a module from the menu. You can drop custom scripts into the `plugins/` directory and run them via the **Plugin Loader** option. Reports can be generated from collected JSON files with the **Generate Report** option.
 
 ## Disclaimer
 

@@ -22,7 +22,7 @@ MODULES = {
     '5': ('AI Analyst', 'ai_analyst'),
     '6': ('Plugin Loader', 'plugin_loader'),
     '7': ('Generate Report', 'report_gen'),
-    '8': ('Self Updater', 'self_updater')
+    '8': ('Self Updater', 'self_updater'),
 }
 
 
@@ -44,7 +44,8 @@ def main():
         table = Table(title="KratorStrike")
         table.add_column("Option")
         table.add_column("Module")
-        for key, (name, _) in MODULES.items():
+        for key in sorted(MODULES.keys(), key=int):
+            name, _ = MODULES[key]
             table.add_row(key, name)
         table.add_row('0', 'Exit')
         console.print(table)
