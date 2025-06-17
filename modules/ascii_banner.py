@@ -1,12 +1,10 @@
-import json
 import logging
-import time
 from datetime import datetime
 from pathlib import Path
 
 from rich.console import Console
 from rich.panel import Panel
-from rich.live import Live
+from pyfiglet import figlet_format
 
 console = Console()
 try:
@@ -16,14 +14,7 @@ except Exception:
 OUTPUT_DIR = Path('output/banner')
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-BANNER_LINES = [
-    "  _  __               _            _____ _     _       ",
-    " | |/ /              | |          /  __ \ |   | |      ",
-    " | ' / ___ _ __   ___| | _____    | /  \/ |__ | | ___  ",
-    " |  < / _ \ '_ \ / __| |/ / __|   | |   | '_ \| |/ _ \ ",
-    " | . \  __/ | | | (__|   <\__ \   | \__/\ | | | |  __/ ",
-    " |_|\_\___|_| |_|\___|_|\_\___/    \____/_| |_|_|\___| ",
-]
+BANNER = figlet_format("Krator", font="slant")
 
 
 # required input() function
@@ -47,15 +38,10 @@ def print_summary():
 
 def run():
     console.clear()
-    captured = ""
-    with Live(console=console, refresh_per_second=4) as live:
-        rendered = ""
-        for line in BANNER_LINES:
-            rendered += line + "\n"
-            live.update(Panel(rendered, title=f"KratorStrike v{VERSION}", border_style="red"))
-            time.sleep(0.2)
-        captured = rendered
+    color_banner = f"[bold magenta]{BANNER}[/bold magenta]"
+    panel = Panel.fit(color_banner, title=f"Krator v{VERSION}", border_style="red")
+    console.print(panel)
     status_panel = Panel(f"Version: {VERSION}\nStatus: Ready", title="Status", style="green")
     console.print(status_panel)
-    save_output('banner', captured)
+    save_output('banner', BANNER + "\n")
     print_summary()

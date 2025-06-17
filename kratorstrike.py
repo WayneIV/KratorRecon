@@ -3,8 +3,9 @@ import sys
 import logging
 from pathlib import Path
 from rich.console import Console
-from rich.table import Table
 from rich.prompt import Prompt
+import questionary
+from questionary import Choice
 
 from modules import ascii_banner
 
@@ -22,8 +23,22 @@ MODULES = {
     '5': ('AI Analyst', 'ai_analyst'),
     '6': ('Plugin Loader', 'plugin_loader'),
     '7': ('Generate Report', 'report_gen'),
-    '8': ('Self Updater', 'self_updater')
+    '8': ('Self Updater', 'self_updater'),
 }
+
+
+def select_module():
+    choices = [
+        Choice(title=f"{key}. {name}", value=key)
+        for key, (name, _) in sorted(MODULES.items(), key=lambda x: int(x[0]))
+    ]
+    choices.append(Choice(title="0. Exit", value="0"))
+    return questionary.select(
+        "Select option",
+        choices=choices,
+        qmark="❯",
+        pointer="➤",
+    ).ask()
 
 
 def disclaimer():
@@ -41,15 +56,8 @@ def main():
     except Exception as e:
         logging.error(f"Failed to display banner: {e}")
     while True:
-        table = Table(title="KratorStrike")
-        table.add_column("Option")
-        table.add_column("Module")
-        for key, (name, _) in MODULES.items():
-            table.add_row(key, name)
-        table.add_row('0', 'Exit')
-        console.print(table)
-        choice = Prompt.ask("Select option")
-        if choice == '0':
+        choice = select_module()
+        if choice is None or choice == '0':
             break
         module = MODULES.get(choice)
         if not module:
