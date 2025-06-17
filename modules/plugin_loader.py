@@ -2,6 +2,7 @@ import os
 import subprocess
 import logging
 from pathlib import Path
+from datetime import datetime
 
 from rich.console import Console
 from rich.prompt import Prompt
@@ -10,26 +11,37 @@ from rich.table import Table
 console = Console()
 PLUG_DIR = Path('plugins')
 PLUG_DIR.mkdir(exist_ok=True)
+OUTPUT_DIR = Path('output/plugins')
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def list_plugins():
     return [f for f in PLUG_DIR.iterdir() if f.suffix in ('.py', '.sh')]
 
 
-def run_plugin(path: Path):
+def run_plugin(path: Path) -> str:
+    """Execute a plugin and return its output."""
     logging.info(f'Running plugin {path}')
     try:
         if path.suffix == '.py':
-            subprocess.run(['python3', str(path)], check=True)
+            result = subprocess.run(['python3', str(path)], capture_output=True, text=True, check=True)
         elif path.suffix == '.sh':
-            subprocess.run(['bash', str(path)], check=True)
+            result = subprocess.run(['bash', str(path)], capture_output=True, text=True, check=True)
+        else:
+            return ''
+        return result.stdout + result.stderr
     except subprocess.CalledProcessError as e:
         console.print(f'[red]Plugin {path} failed: {e}[/red]')
         logging.error(f'Plugin {path} failed: {e}')
+        return str(e)
 
 
-def save_output(_target, _data):
-    pass
+def save_output(target: str, data: str) -> None:
+    """Persist plugin output to a timestamped file."""
+    filename = OUTPUT_DIR / f"{target}_{datetime.now().strftime('%Y%m%d%H%M%S')}.log"
+    with open(filename, 'w') as f:
+        f.write(data)
+    logging.info(f'Plugin output saved to {filename}')
 
 
 def print_summary():
@@ -56,6 +68,7 @@ def run():
     except ValueError:
         console.print('[red]Invalid selection[/red]')
         return
-    run_plugin(plugins[idx])
+    output = run_plugin(plugins[idx])
+    save_output(plugins[idx].stem, output)
     print_summary()
     console.print('[green]Plugin execution completed[/green]')

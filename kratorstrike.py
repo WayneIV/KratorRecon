@@ -8,11 +8,11 @@ from rich.prompt import Prompt
 
 from modules import ascii_banner
 
+Path('logs').mkdir(exist_ok=True)
 logging.basicConfig(filename='logs/session.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 console = Console()
-Path('logs').mkdir(exist_ok=True)
 
 MODULES = {
     '1': ('Passive Recon', 'recon_passive'),
@@ -41,6 +41,7 @@ def main():
     except Exception as e:
         logging.error(f"Failed to display banner: {e}")
     while True:
+        console.clear()
         table = Table(title="KratorStrike")
         table.add_column("Option")
         table.add_column("Module")
@@ -60,6 +61,7 @@ def main():
             logging.info(f"Launching module: {name}")
             mod = importlib.import_module(f"modules.{mod_name}")
             mod.run()
+            Prompt.ask("Press Enter to return to menu")
         except Exception as e:
             logging.error(f"Error running {name}: {e}")
             console.print(f"[red]Error running {name}: {e}[/red]")
