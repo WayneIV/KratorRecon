@@ -1,4 +1,3 @@
-import json
 import logging
 import time
 from datetime import datetime
@@ -7,6 +6,7 @@ from pathlib import Path
 from rich.console import Console
 from rich.panel import Panel
 from rich.live import Live
+from pyfiglet import figlet_format
 
 console = Console()
 try:
@@ -16,13 +16,9 @@ except Exception:
 OUTPUT_DIR = Path('output/banner')
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-BANNER = r"""
- _  __          _             
-| |/ /_ __ __ _| |_ ___  _ __ 
-| ' /| '__/ _` | __/ _ \| '__|
-| . \| | | (_| | || (_) | |   
-|_|\_\_|  \__,_|\__\___/|_|   
-"""
+def generate_banner() -> str:
+    """Return ASCII art banner text."""
+    return figlet_format("KratorStrike", font="slant")
 
 
 # required input() function
@@ -45,14 +41,16 @@ def print_summary():
 
 
 def run():
+    """Render the animated banner."""
     console.clear()
+    banner = generate_banner()
     captured = ""
     with Live(console=console, refresh_per_second=4) as live:
         rendered = ""
-        for line in BANNER.splitlines():
+        for line in banner.splitlines():
             rendered += line + "\n"
             live.update(Panel(rendered, title=f"Krator v{VERSION}", border_style="red"))
-            time.sleep(0.2)
+            time.sleep(0.1)
         captured = rendered
     status_panel = Panel(f"Version: {VERSION}\nStatus: Ready", title="Status", style="green")
     console.print(status_panel)
